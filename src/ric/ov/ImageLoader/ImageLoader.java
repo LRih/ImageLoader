@@ -14,13 +14,15 @@ public final class ImageLoader
     private final Context _context;
     private WeakReference<ImageView> _img;
 
+    private int _reqWidth;
+    private int _reqHeight;
+
     private SourceType _type;
     private int _drawableId;
     private String _imgPath;
-
-    private int _reqWidth;
-    private int _reqHeight;
     private SaveLocation _saveLocation;
+
+    private int _animationId = -1;
 
     //========================================================================= INITIALIZE
     public ImageLoader(Context context)
@@ -32,13 +34,15 @@ public final class ImageLoader
         _context = loader._context;
         _img = loader._img;
 
+        _reqWidth = loader._reqWidth;
+        _reqHeight = loader._reqHeight;
+
         _type = loader._type;
         _drawableId = loader._drawableId;
         _imgPath = loader._imgPath;
-
-        _reqWidth = loader._reqWidth;
-        _reqHeight = loader._reqHeight;
         _saveLocation = loader._saveLocation;
+
+        _animationId = loader._animationId;
     }
 
     //========================================================================= FUNCTIONS
@@ -62,6 +66,12 @@ public final class ImageLoader
         _imgPath = imgUrl;
         _saveLocation = saveLocation;
 
+        return this;
+    }
+
+    public final ImageLoader withAnimation(int animId)
+    {
+        _animationId = animId;
         return this;
     }
 
@@ -93,6 +103,15 @@ public final class ImageLoader
         return _img.get();
     }
 
+    final int reqWidth()
+    {
+        return _reqWidth;
+    }
+    final int reqHeight()
+    {
+        return _reqHeight;
+    }
+
     final SourceType type()
     {
         return _type;
@@ -105,17 +124,13 @@ public final class ImageLoader
     {
         return _imgPath;
     }
-
-    final int reqWidth()
-    {
-        return _reqWidth;
-    }
-    final int reqHeight()
-    {
-        return _reqHeight;
-    }
     final SaveLocation saveLocation()
     {
         return _saveLocation;
+    }
+
+    final int animationId()
+    {
+        return _animationId;
     }
 }

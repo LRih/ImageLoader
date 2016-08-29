@@ -10,7 +10,7 @@ import java.io.*;
 import java.net.URL;
 import java.security.NoSuchAlgorithmException;
 
-public final class BitmapUtils
+final class BitmapUtils
 {
     //========================================================================= INITIALIZE
     private BitmapUtils()

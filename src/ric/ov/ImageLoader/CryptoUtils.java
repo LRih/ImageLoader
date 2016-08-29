@@ -2,7 +2,7 @@ package ric.ov.ImageLoader;
 
 import java.security.*;
 
-public final class CryptoUtils
+final class CryptoUtils
 {
     //========================================================================= INITIALIZE
     private CryptoUtils()

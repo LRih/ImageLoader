@@ -7,6 +7,7 @@ import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.util.Log;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 
 import java.io.IOException;
@@ -94,11 +95,18 @@ final class ImageTask extends AsyncTask<Void, Void, Drawable>
     {
         super.onPostExecute(drawable);
 
-        if (drawable != null)
-        {
-            final ImageView view = _loader.view();
-            if (view != null)
-                view.setImageDrawable(drawable);
-        }
+        if (drawable == null)
+            return;
+
+        final ImageView view = _loader.view();
+
+        if (view == null)
+            return;
+
+        view.setImageDrawable(drawable);
+
+        // perform custom animation if set
+        if (_loader.animationId() != -1)
+            view.startAnimation(AnimationUtils.loadAnimation(_loader.context(), _loader.animationId()));
     }
 }
