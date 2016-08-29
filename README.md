@@ -1,6 +1,9 @@
 # ImageLoader
 ImageLoader is a small lightweight Android library for asynchronously loading images into ImageViews. Supports loading images from resources, local storage and the internet. Images can optionally be cached.
 
+## Download
+You can download a jar from GitHub's [releases page](https://github.com/LRih/ImageLoader/releases).
+
 ## Usage
 Loading an image from resources:
 ```java
