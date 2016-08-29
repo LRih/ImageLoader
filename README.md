@@ -5,6 +5,7 @@ ImageLoader is a small lightweight Android library for asynchronously loading im
 Loading an image from resources:
 ```java
 ImageView img = (ImageView)findViewById(R.id.img);
+
 new ImageLoader(context)
     .fromResource(R.drawable.image)
     .to(img);
@@ -14,6 +15,7 @@ Loading an image from the internet (cached):
 ```java
 String url = "http://path.to.image";
 ImageView img = (ImageView)findViewById(R.id.img);
+
 new ImageLoader(context)
     .fromNetwork(url, SaveLocation.Cache)
     .withAnimation(R.anim.fade_in)
