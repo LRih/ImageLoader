@@ -1,9 +1,7 @@
-package ric.ov.ImageLoader;
+package ric.ov.main;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
+import android.graphics.*;
 import android.media.ExifInterface;
 
 import java.io.*;
@@ -19,6 +17,28 @@ final class BitmapUtils
     }
 
     //========================================================================= FUNCTIONS
+    public static Bitmap createRoundedBitmap(Bitmap bmp)
+    {
+        Bitmap newBmp = Bitmap.createBitmap(bmp.getWidth(), bmp.getHeight(), Bitmap.Config.ARGB_8888);
+        Rect rect = new Rect(0, 0, bmp.getWidth(), bmp.getHeight());
+
+        Canvas canvas = new Canvas(newBmp);
+
+        Paint paint = new Paint();
+        paint.setAntiAlias(true);
+        paint.setColor(Color.MAGENTA);
+
+        canvas.drawRoundRect(new RectF(rect), bmp.getWidth() / 2f, bmp.getHeight() / 2f, paint);
+
+        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
+        canvas.drawBitmap(bmp, rect, rect, paint);
+
+        // recycle old bitmap
+        bmp.recycle();
+
+        return newBmp;
+    }
+
     public static Bitmap decodeResource(Context context, int drawableId, int reqWidth, int reqHeight)
     {
         // first check dimensions

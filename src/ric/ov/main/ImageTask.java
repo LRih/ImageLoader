@@ -1,4 +1,4 @@
-package ric.ov.ImageLoader;
+package ric.ov.main;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -11,6 +11,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 
 import java.io.IOException;
+import java.lang.ref.WeakReference;
 import java.security.NoSuchAlgorithmException;
 
 /**
@@ -20,11 +21,13 @@ final class ImageTask extends AsyncTask<Void, Void, Drawable>
 {
     //========================================================================= VARIABLES
     private final ImageLoader _loader;
+    private final WeakReference<ImageView> _img;
 
     //========================================================================= INITIALIZE
-    public ImageTask(ImageLoader loader)
+    public ImageTask(ImageLoader loader, ImageView img)
     {
         _loader = loader;
+        _img = new WeakReference<ImageView>(img);
     }
 
     //========================================================================= FUNCTIONS
@@ -45,21 +48,28 @@ final class ImageTask extends AsyncTask<Void, Void, Drawable>
     {
         Bitmap bmp;
 
+        // get image view dimensions
+        int reqWidth = _img.get().getWidth();
+        int reqHeight = _img.get().getHeight();
+
         // decode based on source type
         switch (_loader.type())
         {
             case Resource:
-                bmp = BitmapUtils.decodeResource(_loader.context(), _loader.drawableId(), _loader.reqWidth(), _loader.reqHeight());
+                bmp = BitmapUtils.decodeResource(_loader.context(), _loader.drawableId(), reqWidth, reqHeight);
                 break;
             case File:
-                bmp = BitmapUtils.decodeFile(_loader.imgPath(), _loader.reqWidth(), _loader.reqHeight());
+                bmp = BitmapUtils.decodeFile(_loader.imgPath(), reqWidth, reqHeight);
                 break;
             case Network:
-                bmp = decodeUrl(_loader.context(), _loader.imgPath(), _loader.reqWidth(), _loader.reqHeight(), _loader.saveLocation());
+                bmp = decodeUrl(_loader.context(), _loader.imgPath(), reqWidth, reqHeight, _loader.saveLocation());
                 break;
             default:
                 throw new IllegalArgumentException("Unsupported type specified");
         }
+
+        if (_loader.isRounded())
+            bmp = BitmapUtils.createRoundedBitmap(bmp);
 
         return new BitmapDrawable(_loader.context().getResources(), bmp);
     }
@@ -98,15 +108,15 @@ final class ImageTask extends AsyncTask<Void, Void, Drawable>
         if (drawable == null)
             return;
 
-        final ImageView view = _loader.view();
+        final ImageView img = _img.get();
 
-        if (view == null)
+        if (img == null)
             return;
 
-        view.setImageDrawable(drawable);
+        img.setImageDrawable(drawable);
 
         // perform custom animation if set
         if (_loader.animationId() != -1)
-            view.startAnimation(AnimationUtils.loadAnimation(_loader.context(), _loader.animationId()));
+            img.startAnimation(AnimationUtils.loadAnimation(_loader.context(), _loader.animationId()));
     }
 }

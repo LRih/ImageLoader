@@ -18,7 +18,16 @@ ImageView img = (ImageView)findViewById(R.id.img);
 
 new ImageLoader(context)
     .fromNetwork(url, SaveLocation.Cache)
+    .to(img);
+```
+Loading an image with rounded corners and animation:
+```java
+ImageView img = (ImageView)findViewById(R.id.img);
+
+new ImageLoader(context)
+    .fromResource(R.drawable.image)
     .withAnimation(R.anim.fade_in)
+    .setRounded()
     .to(img);
 ```
 

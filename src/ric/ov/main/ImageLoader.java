@@ -1,4 +1,4 @@
-package ric.ov.ImageLoader;
+package ric.ov.main;
 
 import android.content.Context;
 import android.widget.ImageView;
@@ -22,6 +22,7 @@ public final class ImageLoader
     private String _imgPath;
     private SaveLocation _saveLocation;
 
+    private boolean _isRounded = false;
     private int _animationId = -1;
 
     //========================================================================= INITIALIZE
@@ -42,6 +43,7 @@ public final class ImageLoader
         _imgPath = loader._imgPath;
         _saveLocation = loader._saveLocation;
 
+        _isRounded = loader._isRounded;
         _animationId = loader._animationId;
     }
 
@@ -69,6 +71,18 @@ public final class ImageLoader
         return this;
     }
 
+    /**
+     * Create image with rounded corners.
+     */
+    public final ImageLoader setRounded()
+    {
+        _isRounded = true;
+        return this;
+    }
+
+    /**
+     * View animation to play after image has loaded.
+     */
     public final ImageLoader withAnimation(int animId)
     {
         _animationId = animId;
@@ -77,18 +91,14 @@ public final class ImageLoader
 
     public final void to(final ImageView img)
     {
+        final ImageLoader loader = new ImageLoader(this);
+
         // post in case called from onCreate(), in which case view width/height will be zero
         img.post(new Runnable()
         {
             public final void run()
             {
-                _img = new WeakReference<ImageView>(img);
-
-                // get image view dimensions
-                _reqWidth = _img.get().getWidth();
-                _reqHeight = _img.get().getHeight();
-
-                new ImageTask(new ImageLoader(ImageLoader.this)).run();
+                new ImageTask(loader, img).run();
             }
         });
     }
@@ -98,19 +108,19 @@ public final class ImageLoader
     {
         return _context;
     }
-    final ImageView view()
-    {
-        return _img.get();
-    }
+//    final ImageView view()
+//    {
+//        return _img.get();
+//    }
 
-    final int reqWidth()
-    {
-        return _reqWidth;
-    }
-    final int reqHeight()
-    {
-        return _reqHeight;
-    }
+//    final int reqWidth()
+//    {
+//        return _reqWidth;
+//    }
+//    final int reqHeight()
+//    {
+//        return _reqHeight;
+//    }
 
     final SourceType type()
     {
@@ -129,6 +139,10 @@ public final class ImageLoader
         return _saveLocation;
     }
 
+    final boolean isRounded()
+    {
+        return _isRounded;
+    }
     final int animationId()
     {
         return _animationId;

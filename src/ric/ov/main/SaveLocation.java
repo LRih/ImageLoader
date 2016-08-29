@@ -1,4 +1,4 @@
-package ric.ov.ImageLoader;
+package ric.ov.main;
 
 public enum SaveLocation
 {

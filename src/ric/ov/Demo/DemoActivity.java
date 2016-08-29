@@ -1,10 +1,10 @@
-package ric.ov.Demo;
+package ric.ov.demo;
 
 import android.app.Activity;
 import android.os.Bundle;
 import android.widget.ImageView;
-import ric.ov.ImageLoader.ImageLoader;
-import ric.ov.ImageLoader.SaveLocation;
+import ric.ov.main.ImageLoader;
+import ric.ov.main.SaveLocation;
 
 public final class DemoActivity extends Activity
 {
@@ -28,7 +28,7 @@ public final class DemoActivity extends Activity
         _img6 = (ImageView)findViewById(R.id.img6);
 
         // load image from resources
-        new ImageLoader(this).fromResource(R.drawable.image).to(_img1);
+        new ImageLoader(this).fromResource(R.drawable.image).setRounded().to(_img1);
         new ImageLoader(this).fromResource(R.drawable.image).withAnimation(R.anim.fade_scale_in).to(_img2);
 
         // load image from network
